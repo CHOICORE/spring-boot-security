@@ -1,0 +1,39 @@
+server: 
+  port: 80
+#  servlet:
+#    context-path: /core
+spring:
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    prefix : classpath:templates/
+    suffix : .html 
+    cache: false
+    
+  h2:
+    console:
+      enabled: true
+      
+  datasource:
+    driver-class-name: org.h2.Driver
+    # DB - 파일
+    #url: jdbc:h2:file:D:\spring-boot\h2\blog_db
+    # DB - 메모리
+    url: jdbc:h2:file:D:\workspace\spring-boot\h2\blog_db
+    username: core
+    password: 2523
+    
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Entity 변수명 그대로 필드 생성
+      use-new-id-generator-mappings: false
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
