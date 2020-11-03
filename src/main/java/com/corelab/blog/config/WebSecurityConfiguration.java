@@ -54,20 +54,24 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private void setLocalAuthorityConfigure(HttpSecurity http) throws Exception {
-        http.headers().frameOptions().sameOrigin().and().csrf().disable();
+        http.headers()
+                .frameOptions().sameOrigin()
+                .and()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/h2-console").permitAll();
+
         this.setOperationAuthorityConfigure(http);
     }
 
     private void setOperationAuthorityConfigure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/", "/h2-console/**", "/auth/**", "/js/**", "/css/**", "/images/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+        http.authorizeRequests().antMatchers("/user/**").authenticated()
+                //.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/account/loginForm")
-                .loginProcessingUrl("/account/loginProc")
+                .formLogin().loginPage("/account/login")
+                .loginProcessingUrl("/account/login")
                 .defaultSuccessUrl("/");
 
     }
