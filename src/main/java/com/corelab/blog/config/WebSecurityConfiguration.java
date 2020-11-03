@@ -65,8 +65,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private void setOperationAuthorityConfigure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests().antMatchers("/user/**").authenticated()
-                //.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+                // PrincipalDetailsService 에서 Authority 를 가져와서 확인할 때 자동으로 ROLE 이라는 접두어를 붙어서 확인한다.
+                .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
                 .and()
