@@ -51,10 +51,6 @@ public class PrincipalDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collectors = new ArrayList<GrantedAuthority>();
         collectors.add(() -> {
-            // TODO: 2020-11-03 WebSecurityConfiguration 에서는 hasRole 권한 설정을 ADMIN으로 했는데 반환되는 값은 ROLE_ADMIN로 했는데 왜 인증이 되는지 찾아봐야함
-            System.out.println("============================");
-            System.out.println(account.getRole());
-            System.out.println("============================");
             return account.getRole().toString();
         });
         return collectors;
