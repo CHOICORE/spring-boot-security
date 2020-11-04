@@ -23,13 +23,13 @@ public class AccountController {
 
     @RequestMapping(value="/login",method = RequestMethod.GET)
     public String accountLoginForm(){
-        return "/accounts/accountLogin";
+        return "/account/accountLogin";
     }
 
     @RequestMapping(value="/signup",method = RequestMethod.GET)
     public String accountSignUpForm() {
         // TODO: 2020-11-03 호출하는 함수 로그 핸들러 만들거나 찾아보기 
-        return "accounts/accountSignUp";
+        return "account/accountSignUp";
     }
 
     @RequestMapping(value="/signup",method = RequestMethod.POST)
