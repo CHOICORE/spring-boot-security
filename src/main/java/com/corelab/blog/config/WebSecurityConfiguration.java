@@ -19,9 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private Environment environment;
-
-    @Autowired
     private PrincipalDetailsService principalDetailsService;
 
     @Value(value = "${spring.profiles.active ?:local}")
@@ -39,6 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        System.out.println(isLocalEnvironment());
         if (isLocalEnvironment()) {
             /*
              로컬환경에서 개발할 때 csrf disabled
@@ -54,14 +52,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private boolean isLocalEnvironment() {
         // // TODO: 프로파일을 구분하는 함수 - ENUM TYPE으로 변경
-        System.out.println(ProfilesType.LOCAL);
-        System.out.println(ProfilesType.LOCAL.name());
-        System.out.println(ProfilesType.LOCAL.toString());
-        System.out.println("=============================================================");
-        System.out.println(profiles);
-        System.out.println("=============================================================");
-//        String profile = environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0] : "local";
-        return profiles.equals("local") || profiles.equals("dev");
+        return profiles.contains("local") || profiles.contains("dev");
     }
 
     private void setLocalAuthorityConfigure(HttpSecurity http) throws Exception {
@@ -70,7 +61,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/h2-console").permitAll();
+                .antMatchers("/h2-console/**").permitAll();
 
         this.setOperationAuthorityConfigure(http);
     }
