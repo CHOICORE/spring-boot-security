@@ -1,7 +1,9 @@
 package com.corelab.blog.config;
 
+import com.corelab.blog.model.ProfilesType;
 import com.corelab.blog.service.PrincipalDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -21,6 +23,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PrincipalDetailsService principalDetailsService;
+
+    @Value(value = "${spring.profiles.active ?:local}")
+    private String profiles;
 
     @Bean
     public BCryptPasswordEncoder brCryptPasswordEncoder() {
@@ -48,9 +53,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     private boolean isLocalEnvironment() {
-        String profile = environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0] : "local";
-        System.out.println("Active Profile : " + profile);
-        return profile.equals("local");
+        // // TODO: 프로파일을 구분하는 함수 - ENUM TYPE으로 변경
+        System.out.println(ProfilesType.LOCAL);
+        System.out.println(ProfilesType.LOCAL.name());
+        System.out.println(ProfilesType.LOCAL.toString());
+        System.out.println("=============================================================");
+        System.out.println(profiles);
+        System.out.println("=============================================================");
+//        String profile = environment.getActiveProfiles().length > 0 ? environment.getActiveProfiles()[0] : "local";
+        return profiles.equals("local") || profiles.equals("dev");
     }
 
     private void setLocalAuthorityConfigure(HttpSecurity http) throws Exception {

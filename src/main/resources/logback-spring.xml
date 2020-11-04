@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- TODO: spring.profiles.active = null일때 defaultValue 추가-->
+
+    <property name="PATTERN" value="%-30(%d{yyyy-MM-dd HH:mm:ss} [%thread]) [%highlight(%-5level)] %cyan(%logger{15}) - %yellow(%msg%n)" />
+
+    <!-- aplication.yml에 정의한 log level, dir 데이터를 정의합니다 -->
+    <springProperty scope="context" name="LOG_LEVEL" source="INFO" defaultValue="INFO"/>
+    <!--<springProperty scope="context" name="LOG_DIR" source="bamdule.logging.dir"/>-->
+
+    <!--콘솔에 로그를 남깁니다.-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <springProfile name="local,dev">
+        <logger name="org.springframework.boot" level="WARN"/>
+        <logger name="org.springframework.web" level="DEBUG"/>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="org.springframework" level="info"/>
+    </springProfile>
+</configuration>

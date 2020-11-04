@@ -1,9 +1,7 @@
-server: 
-  port: 80
-#  servlet:
-#    context-path: /
-
+#spring
 spring:
+  profiles:
+    active: local
   devtools:
     livereload:
       enabled: true
@@ -11,28 +9,27 @@ spring:
   thymeleaf:
     mode: HTML
     encoding: UTF-8
-    prefix : classpath:templates/
-    suffix : .html 
+    prefix: classpath:templates/
+    suffix: .html
     cache: false
-#  resources:
-#    static-locations:
-#      - classpath:/static/
-    
+
   h2:
     console:
       enabled: true
-      
+
   datasource:
     driver-class-name: org.h2.Driver
+    # DB - 메모리
+    # url: jdbc:h2:mem:testdb
     # DB - 파일
-    url: jdbc:h2:file:D:\workspace\spring-boot\h2\blog_db
+    url: jdbc:h2:file:D:\workspace\spring-boot\h2\blogdb
     username: core
     password: 2523
-    
+
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl # Entity 변수명 그대로 필드 생성
       use-new-id-generator-mappings: false
@@ -43,3 +40,9 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+#tomcat
+server:
+  port: 80
+  servlet:
+    context-path: /
