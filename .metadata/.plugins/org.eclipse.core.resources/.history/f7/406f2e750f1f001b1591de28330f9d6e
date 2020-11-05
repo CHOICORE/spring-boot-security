@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>thymeleaf</title>
+</head>
+<body>
+<h1>thymeleaf engine <a href="/account/login">login</a></h1>
+<hr/>
+
+<h1>thymeleaf2</h1>
+
+</body>
+</html>

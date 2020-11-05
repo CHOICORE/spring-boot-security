@@ -14,7 +14,7 @@ public enum ProfilesType {
 	/*
 	* Enum  순회로 찾기
 	* */
-	/*public static AccountRoleType findByProfilesType(String role) {
+	/*public static AccountRoleType findByAccountRoleType(String role) {
 		return Arrays.stream(AccountRoleType.values())
 				.filter( s -> s.toString().equals(role))
 				.findFirst()
