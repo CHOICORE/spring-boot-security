@@ -12,6 +12,16 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
 
 ### IntelliJ IDEA ###
 .idea
