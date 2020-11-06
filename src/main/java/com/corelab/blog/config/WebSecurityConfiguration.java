@@ -1,22 +1,22 @@
 package com.corelab.blog.config;
 
-import com.corelab.blog.model.ProfilesType;
 import com.corelab.blog.service.PrincipalDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터 추가
 //@EnableGlobalMethodSecurity(prePostEnabled = true) // 특정 주소로 접근하면 권한 및 인증 선행 체크
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final String idForEncode = "bcrypt";
 
     @Autowired
     private PrincipalDetailsService principalDetailsService;
@@ -25,13 +25,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private String profiles;
 
     @Bean
-    public BCryptPasswordEncoder brCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    public PasswordEncoder passwordEncoder() {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(principalDetailsService).passwordEncoder(brCryptPasswordEncoder());
+        /* Create Custom DelegatingPasswordEncoder
+        Map encoders = new HashMap<>();
+        encoders.put("bycrypt", new BCryptPasswordEncoder());
+        encoders.put("noop", NoOpPasswordEncoder.getInstance());
+        encoders.put("pbkdf2", new Pbkdf2PasswordEncoder());
+        encoders.put("scrypt", new SCryptPasswordEncoder());
+        encoders.put("sha256", new StandardPasswordEncoder());
+        return new DelegatingPasswordEncoder(idForEncode, encoders);
+        */
+        /* default - {bcrypt}encodedPassword */
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -72,12 +78,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // PrincipalDetailsService 에서 Authority 를 가져와서 확인할 때 자동으로 ROLE 이라는 접두어를 붙어서 확인한다.
                 .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-                .anyRequest().permitAll()
+                .antMatchers("/hello/**", "/account/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/account/login")
                 .loginProcessingUrl("/account/login")
                 .defaultSuccessUrl("/");
-
     }
 
 }

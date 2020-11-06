@@ -7,14 +7,17 @@
 <body>
 <h1>thymeleaf engine</h1>
 <hr/>
-
-<form action ="/account/login" method="post">
-
-    <input type="text" name="username" placeholder="Enter ID"><br/>
-    <input type="password" name="password" placeholder="Enter password"><br/>
-    <button type="submit" >로그인</button>
-
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<form th:action="@{/account/login}" method="post">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/></div>
 </form>
-<a href="/account/signup">아직 회원가입을 하지 않으셨나요?</a>
+<a th:href="@{/account/signup}">아직 회원가입을 하지 않으셨나요?</a>
 </body>
 </html>

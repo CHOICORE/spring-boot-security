@@ -11,7 +11,7 @@ import java.util.Collection;
 @Getter
 public class PrincipalDetails implements UserDetails {
 
-    private Account account;
+    private final Account account;
 
     public PrincipalDetails(Account account) {
         this.account = account;
@@ -49,7 +49,7 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collectors = new ArrayList<GrantedAuthority>();
+        Collection<GrantedAuthority> collectors = new ArrayList<>();
         collectors.add(() -> {
             return account.getRole().toString();
         });

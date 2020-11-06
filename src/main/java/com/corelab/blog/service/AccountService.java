@@ -5,7 +5,7 @@ import com.corelab.blog.entity.Account;
 import com.corelab.blog.model.AccountRoleType;
 import com.corelab.blog.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,15 +17,13 @@ public class AccountService {
     AccountRepository accountRepository;
 
     @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    PasswordEncoder passwordEncoder;
 
     @Transactional
     public void signUp(Account account){
-
         account.setRole(AccountRoleType.ADMIN);
-        account.setPassword(bCryptPasswordEncoder.encode(account.getPassword()));
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         accountRepository.save(account);
-
     }
 
 }
